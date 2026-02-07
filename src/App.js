@@ -9,6 +9,33 @@ const Portfolio = () => {
     setIsLoaded(true);
   }, []);
 
+  const handleResumeDownload = async (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const resumeUrl = `${process.env.PUBLIC_URL}/JeffNader-CV.pdf`;
+
+    try {
+      const response = await fetch(resumeUrl, { cache: 'no-cache' });
+      if (!response.ok) {
+        throw new Error('Resume download failed');
+      }
+
+      const blob = await response.blob();
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = 'JeffNader-CV.pdf';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   const projects = [
     {
       title: "E-Commerce Platform",
@@ -83,10 +110,10 @@ const Portfolio = () => {
               View Projects
             </button>
             <a 
-              href="/JeffNader-CV.pdf"
-              download="JeffNader-CV.pdf"
+              href={`${process.env.PUBLIC_URL}/JeffNader-CV.pdf`}
               className="btn-secondary"
               style={{ textDecoration: 'none' }}
+              onClick={handleResumeDownload}
             >
               Download Resume
             </a>
