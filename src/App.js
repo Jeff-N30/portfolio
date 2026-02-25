@@ -13,55 +13,42 @@ const Portfolio = () => {
 
   useEffect(() => {
     if (showLoading) {
-      // Prevent scrolling during loading
       document.body.style.overflow = 'hidden';
       return;
     }
     
-    // Re-enable scrolling after loading
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
 
-    // Add scroll animation observer
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+    // Simple scroll spy - no blocking, just tracking
+    const handleScroll = () => {
+      const sections = ['home', 'projects', 'skills', 'contact'];
+      const scrollPos = window.scrollY + 150;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // If near bottom, activate contact
+      if (window.scrollY + windowHeight >= documentHeight - 100) {
+        setActiveSection('contact');
+        return;
+      }
+      
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
     };
 
-    const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-        }
-      });
-    }, observerOptions);
-
-    // Observe all sections with scroll-fade-in class
-    const sections = document.querySelectorAll('.scroll-fade-in');
-    sections.forEach(section => scrollObserver.observe(section));
-
-    // Track active section based on scroll position
-    const sectionObserverOptions = {
-      threshold: 0.3,
-      rootMargin: '-60px 0px -60% 0px'
-    };
-
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id;
-          setActiveSection(sectionId);
-        }
-      });
-    }, sectionObserverOptions);
-
-    // Observe main sections
-    const mainSections = document.querySelectorAll('section[id]');
-    mainSections.forEach(section => sectionObserver.observe(section));
-
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      scrollObserver.disconnect();
-      sectionObserver.disconnect();
-      document.body.style.overflow = 'auto';
+      window.removeEventListener('scroll', handleScroll);
+      document.body.style.overflow = '';
     };
   }, [showLoading]);
 
@@ -102,14 +89,9 @@ const Portfolio = () => {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 60; // navbar height
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const offset = 60;
+      const elementPosition = element.offsetTop - offset;
+      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
     }
   };
 
@@ -121,40 +103,22 @@ const Portfolio = () => {
     <div className="portfolio">
       <NavBar activeSection={activeSection} scrollToSection={scrollToSection} isLoaded={isLoaded} />
       
-      <div className="main-content">
-        <HeroSection handleResumeDownload={handleResumeDownload} isLoaded={isLoaded} />
+      <main>
+        <HeroSection handleResumeDownload={handleResumeDownload} scrollToSection={scrollToSection} isLoaded={isLoaded} />
         <ProjectsSection />
         <SkillsSection />
         <ContactSection />
-      </div>
-      
+      </main>
 
       <style jsx>{`
-        /* Base Styles - Dark Mode Aesthetic */
         .portfolio {
           min-height: 100vh;
-          background: #000000;
-          color: #ffffff;
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-          overflow-x: hidden;
-          position: relative;
+          background: #000;
+          color: #fff;
+          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
         }
 
-        /* Scroll Animation Styles */
-        .scroll-fade-in {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .scroll-fade-in.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        /* Main Content */
-        .main-content {
+        main {
           position: relative;
         }
       `}</style>

@@ -15,81 +15,65 @@ export const ProjectsSection = () => {
     {
       title: "The Wine Room",
       subtitle: "E-Commerce Platform",
-      description: "Full-featured e-commerce platform with product catalog, cart system, and secure checkout. Built with modern tech stack for optimal performance.",
-      features: ["Product Catalog", "Cart System", "Secure Checkout", "Modern UI"],
+      description: "Full-featured e-commerce platform with product catalog, cart system, and secure checkout.",
+      features: ["Product Catalog", "Cart System", "Secure Checkout"],
       tech: ["FastAPI", "React", "Vite", "Node.js"],
       icon: "wine"
     },
     {
       title: "Metis",
-      subtitle: "Chemical Formulation Database",
-      description: "Metis is a secure chemical formulation database with triple-layer encryption, cross-platform support, and complete workflow management for inventory, projects, testing, production, and reporting.",
-      features: ["Secure Data Management", "Cross-Platform Support", "Portable Architecture", "Professional Interface", "Complete Workflow"],
-      tech: ["Node.js 18+", "Rust", "Tauri", "React", "Sqlite", "SQLCipher", "VeraCrypt"],
+      subtitle: "Database System",
+      description: "Secure chemical formulation database with triple-layer encryption and cross-platform support.",
+      features: ["Encrypted Storage", "Cross-Platform", "Workflow Management"],
+      tech: ["Tauri", "React", "Rust", "SQLCipher"],
       icon: "flask"
     },
     {
       title: "CourtVision",
-      subtitle: "AI Basketball Analytics Platform",
-      description: "AI-powered basketball analytics platform delivering real-time insights, advanced statistics, and visual heatmaps. Transforms live basketball footage into 2D visualized heatmaps for coaches, athletes, and game analysis.",
-      features: ["Live Score", "Analytics", "Shot Chart"],
-      tech: ["YOLOv8", "Streamlit", "OpenCV", "PyTorch", "NumPy", "Img Coords"],
+      subtitle: "AI Analytics",
+      description: "AI-powered basketball analytics platform with real-time insights and visual heatmaps.",
+      features: ["Live Tracking", "Shot Analysis", "Heatmap Generation"],
+      tech: ["YOLOv8", "Streamlit", "OpenCV", "PyTorch"],
       icon: "basketball"
     }
   ];
 
   return (
-    <section id="projects" className="projects-section scroll-fade-in">
+    <section id="projects" className="projects-section">
       <div className="container">
-        <h2 className="section-title">
-          Featured Projects
-        </h2>
+        <h2 className="section-title">Projects</h2>
         <div className="projects-grid">
           {projects.map((project, index) => (
             <div
               key={index}
               className="project-card-container"
-              style={{ 
-                animationDelay: `${index * 0.1}s`,
-                animationFillMode: 'forwards'
-              }}
               onClick={() => toggleCard(index)}
             >
               <div className={`project-card ${flippedCards[index] ? 'flipped' : ''}`}>
-                {/* Front of card */}
                 <div className="card-face card-front">
-                  <div className="project-header">
-                    <div className="project-icon">
-                      {project.icon === 'wine' ? <Wine size={24} /> :
-                       project.icon === 'flask' ? <FlaskConical size={24} /> :
-                       <Circle size={24} />}
-                    </div>
+                  <div className="project-icon">
+                    {project.icon === 'wine' ? <Wine size={24} /> :
+                     project.icon === 'flask' ? <FlaskConical size={24} /> :
+                     <Circle size={24} />}
                   </div>
                   <h3 className="project-title">{project.title}</h3>
                   <p className="project-subtitle">{project.subtitle}</p>
                   <div className="tap-hint">Tap to explore</div>
                 </div>
 
-                {/* Back of card */}
                 <div className="card-face card-back">
-                  <div className="back-header">
-                    <h3 className="project-title-back">{project.title}</h3>
-                  </div>
+                  <h3 className="project-title-back">{project.title}</h3>
                   <p className="project-description">{project.description}</p>
                   
-                  {project.features && (
-                    <div className="features-list">
-                      {project.features.map((feature, fIndex) => (
-                        <span key={fIndex} className="feature-item">• {feature}</span>
-                      ))}
-                    </div>
-                  )}
+                  <div className="features-list">
+                    {project.features.map((feature, fIndex) => (
+                      <span key={fIndex} className="feature-item">• {feature}</span>
+                    ))}
+                  </div>
 
                   <div className="tech-stack">
                     {project.tech.map((tech, techIndex) => (
-                      <span key={techIndex} className="tech-tag">
-                        {tech}
-                      </span>
+                      <span key={techIndex} className="tech-tag">{tech}</span>
                     ))}
                   </div>
                   <div className="tap-hint-back">Tap to close</div>
@@ -102,35 +86,33 @@ export const ProjectsSection = () => {
 
       <style jsx>{`
         .projects-section {
-          padding: 5rem 0;
-          position: relative;
+          padding: 80px 24px;
+          border-top: 1px solid #1a1a1a;
         }
 
         .container {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 2rem;
         }
 
         .section-title {
-          text-align: center;
-          font-size: clamp(2.5rem, 5vw, 3.5rem);
-          font-weight: 700;
-          margin-bottom: 4rem;
-          letter-spacing: -0.02em;
-          color: #ffffff;
+          font-size: 32px;
+          font-weight: 600;
+          color: #fff;
+          margin: 0 0 48px;
+          letter-spacing: -1px;
         }
 
         .projects-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
         }
 
         .project-card-container {
           perspective: 1000px;
           cursor: pointer;
-          height: 400px;
+          height: 380px;
         }
 
         .project-card {
@@ -138,7 +120,7 @@ export const ProjectsSection = () => {
           width: 100%;
           height: 100%;
           transform-style: preserve-3d;
-          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform 0.6s ease;
         }
 
         .project-card.flipped {
@@ -151,29 +133,20 @@ export const ProjectsSection = () => {
           height: 100%;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          background: #161616;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 18px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+          background: #0a0a0a;
+          border: 1px solid #1a1a1a;
+          border-radius: 12px;
           display: flex;
           flex-direction: column;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-front {
-          padding: 2rem;
-        }
-
-        .card-back {
-          padding: 1.5rem;
+          transition: border-color 0.2s ease;
         }
 
         .project-card-container:hover .card-face {
-          border-color: rgba(255, 255, 255, 0.2);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+          border-color: #333;
         }
 
         .card-front {
+          padding: 32px;
           justify-content: center;
           align-items: center;
           text-align: center;
@@ -181,179 +154,113 @@ export const ProjectsSection = () => {
 
         .card-back {
           transform: rotateY(180deg);
+          padding: 24px;
           overflow-y: auto;
-          overflow-x: hidden;
-          scrollbar-width: thin;
-          scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-        }
-
-        .card-back::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .card-back::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        .card-back::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.2);
-          border-radius: 3px;
-        }
-
-        .card-back::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-
-        .project-header {
-          margin-bottom: 1.5rem;
         }
 
         .project-icon {
           width: 56px;
           height: 56px;
-          border-radius: 14px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #2c2c2e;
-          color: #ffffff;
-          margin: 0 auto;
+          background: #111;
+          border: 1px solid #222;
+          color: #888;
+          margin-bottom: 20px;
         }
 
         .project-title {
-          font-size: 1.75rem;
+          font-size: 22px;
           font-weight: 600;
-          margin-bottom: 0.5rem;
-          letter-spacing: -0.02em;
-          color: #ffffff;
+          margin-bottom: 8px;
+          color: #fff;
         }
 
         .project-subtitle {
-          font-size: 1rem;
-          color: #a1a1a6;
-          font-weight: 400;
-          letter-spacing: -0.01em;
+          font-size: 14px;
+          color: #666;
         }
 
         .tap-hint {
-          margin-top: 2rem;
-          font-size: 0.875rem;
-          color: #6e6e73;
-          font-weight: 400;
-        }
-
-        .back-header {
-          margin-bottom: 0.75rem;
-          flex-shrink: 0;
+          margin-top: 24px;
+          font-size: 13px;
+          color: #444;
         }
 
         .project-title-back {
-          font-size: 1.25rem;
+          font-size: 18px;
           font-weight: 600;
-          letter-spacing: -0.02em;
-          color: #ffffff;
-          margin-bottom: 0;
+          color: #fff;
+          margin-bottom: 12px;
         }
 
         .project-description {
-          color: #a1a1a6;
-          line-height: 1.4;
-          font-size: 0.875rem;
-          margin-bottom: 0.875rem;
-          flex-shrink: 0;
+          color: #888;
+          line-height: 1.5;
+          font-size: 14px;
+          margin-bottom: 16px;
         }
 
         .features-list {
           display: flex;
           flex-direction: column;
-          gap: 0.375rem;
-          margin-bottom: 0.875rem;
-          flex-shrink: 0;
+          gap: 6px;
+          margin-bottom: 16px;
         }
 
         .feature-item {
-          color: #86868b;
-          font-size: 0.8125rem;
-          line-height: 1.3;
+          color: #666;
+          font-size: 13px;
         }
 
         .tech-stack {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.375rem;
-          flex-shrink: 0;
+          gap: 8px;
         }
 
         .tech-tag {
-          padding: 0.375rem 0.625rem;
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 6px 12px;
+          background: #111;
+          border: 1px solid #222;
           border-radius: 6px;
-          font-size: 0.75rem;
+          font-size: 12px;
           font-weight: 500;
-          color: #ffffff;
-          letter-spacing: -0.01em;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .tech-tag:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: rgba(255, 255, 255, 0.2);
+          color: #fff;
         }
 
         .tap-hint-back {
-          margin-top: 0.75rem;
-          font-size: 0.75rem;
-          color: #6e6e73;
+          margin-top: auto;
+          padding-top: 16px;
+          font-size: 12px;
+          color: #444;
           text-align: center;
-          flex-shrink: 0;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
+          .projects-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .projects-section {
+            padding: 60px 20px;
+          }
+
+          .section-title {
+            font-size: 28px;
+            margin-bottom: 32px;
+          }
+
           .projects-grid {
             grid-template-columns: 1fr;
           }
 
           .project-card-container {
-            height: 380px;
-          }
-
-          .card-front {
-            padding: 1.75rem;
-          }
-
-          .card-back {
-            padding: 1.25rem;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .container {
-            padding: 0 1.25rem;
-          }
-
-          .section-title {
-            font-size: 2rem;
-          }
-
-          .project-card-container {
-            height: 360px;
-          }
-
-          .card-front {
-            padding: 1.5rem;
-          }
-
-          .card-back {
-            padding: 1.125rem;
-          }
-
-          .project-title {
-            font-size: 1.5rem;
-          }
-
-          .project-title-back {
-            font-size: 1.125rem;
+            height: 340px;
           }
         }
       `}</style>

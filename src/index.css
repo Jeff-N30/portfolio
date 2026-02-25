@@ -4,30 +4,17 @@
   box-sizing: border-box;
 }
 
-/* Remove custom scrollbar styling - use default OS scrollbar */
-*::-webkit-scrollbar {
-  width: auto;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: auto;
-}
-
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #000000;
-  color: #ffffff;
+  background: #000;
+  color: #fff;
   overflow-x: hidden;
+  line-height: 1.5;
 }

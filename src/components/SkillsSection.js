@@ -2,27 +2,22 @@ import React from 'react';
 
 export const SkillsSection = () => {
   const skills = {
-    frontend: ["React", "JavaScript", "CSS/Tailwind"],
-    backend: ["Node.js", ".NET", "MongoDB", "MySQL", "GraphQL"],
+    Frontend: ["React", "JavaScript", "TypeScript", "CSS", "Tailwind"],
+    Backend: ["Node.js", ".NET", "FastAPI", "GraphQL"],
+    Database: ["MongoDB", "MySQL", "SQLite", "PostgreSQL"]
   };
 
   return (
-    <section id="skills" className="skills-section scroll-fade-in">
+    <section id="skills" className="skills">
       <div className="container">
-        <h2 className="section-title">
-          Technical Skills
-        </h2>
+        <h2 className="section-title">Skills</h2>
         <div className="skills-grid">
-          {Object.entries(skills).map(([category, skillList], index) => (
-            <div key={category} className="skill-category">
-              <h3 className={`skill-category-title ${category}`}>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </h3>
-              <div className="skills-list">
-                {skillList.map((skill, skillIndex) => (
-                  <div key={skillIndex} className="skill-item">
-                    <span className="skill-name">{skill}</span>
-                  </div>
+          {Object.entries(skills).map(([category, items]) => (
+            <div key={category} className="skill-group">
+              <h3 className="skill-category">{category}</h3>
+              <div className="skill-items">
+                {items.map((skill, i) => (
+                  <span key={i} className="skill">{skill}</span>
                 ))}
               </div>
             </div>
@@ -31,94 +26,97 @@ export const SkillsSection = () => {
       </div>
 
       <style jsx>{`
-        .skills-section {
-          padding: 5rem 0;
-          position: relative;
-          background: #0a0a0a;
+        .skills {
+          padding: 80px 24px;
+          background: #050505;
+          border-top: 1px solid #1a1a1a;
         }
 
         .container {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 2rem;
         }
 
         .section-title {
-          text-align: center;
-          font-size: clamp(2.5rem, 5vw, 3.5rem);
-          font-weight: 700;
-          margin-bottom: 4rem;
-          letter-spacing: -0.02em;
-          color: #ffffff;
+          font-size: 32px;
+          font-weight: 600;
+          color: #fff;
+          margin: 0 0 48px;
+          letter-spacing: -1px;
         }
 
         .skills-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+
+        .skill-group {
+          padding: 24px;
+          background: #0a0a0a;
+          border: 1px solid #1a1a1a;
+          border-radius: 12px;
         }
 
         .skill-category {
-          background: #161616;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          padding: 2rem;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .skill-category-title {
-          font-size: 1.25rem;
+          font-size: 13px;
           font-weight: 600;
-          margin-bottom: 1.75rem;
-          text-transform: capitalize;
-          letter-spacing: -0.01em;
-          color: #ffffff;
+          color: #666;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 0 0 16px;
         }
 
-        .skills-list {
+        .skill-items {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.75rem;
+          gap: 8px;
         }
 
-        .skill-item {
-          padding: 0.625rem 1rem;
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 8px;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .skill-item:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-        }
-
-        .skill-name {
-          color: #ffffff;
+        .skill {
+          font-size: 14px;
           font-weight: 500;
-          font-size: 0.9375rem;
-          letter-spacing: -0.01em;
+          color: #fff;
+          background: #111;
+          border: 1px solid #222;
+          padding: 8px 14px;
+          border-radius: 6px;
+          transition: border-color 0.15s ease, background 0.15s ease;
         }
 
-        @media (max-width: 768px) {
+        .skill:hover {
+          border-color: #333;
+          background: #161616;
+        }
+
+        @media (max-width: 900px) {
           .skills-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
           }
         }
 
-        @media (max-width: 480px) {
-          .container {
-            padding: 0 1.25rem;
-          }
-
-          .skill-category {
-            padding: 1.5rem;
+        @media (max-width: 600px) {
+          .skills {
+            padding: 60px 20px;
           }
 
           .section-title {
-            font-size: 2rem;
+            font-size: 28px;
+            margin-bottom: 32px;
+          }
+
+          .skills-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+
+          .skill-group {
+            padding: 20px;
+          }
+
+          .skill {
+            font-size: 13px;
+            padding: 6px 12px;
           }
         }
       `}</style>

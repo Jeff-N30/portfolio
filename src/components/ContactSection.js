@@ -2,149 +2,140 @@ import React from 'react';
 import { Mail, Github, Linkedin, MessageCircle } from 'lucide-react';
 
 export const ContactSection = () => (
-  <section id="contact" className="contact-section scroll-fade-in">
+  <section id="contact" className="contact">
     <div className="container">
-      <div className="contact-content">
-        <h2 className="section-title">
-          Let's Work Together
-        </h2>
-        <p className="contact-subtitle">
-          Ready to bring your ideas to life? Let's create something amazing together.
-        </p>
-        <div className="contact-buttons">
-          <a 
-            href="mailto:jeffnader30@gmail.com" 
-            className="btn-contact primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Mail size={20} />
-            Gmail
-          </a>
-          <a 
-            href="https://wa.me/96176369668" 
-            className="btn-contact secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <MessageCircle size={20} />
-            WhatsApp
-          </a>
-          <a 
-            href="https://github.com/Jeff-N30" 
-            className="btn-contact secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Github size={20} />
-            GitHub
-          </a>
-          <a 
-            href="https://www.linkedin.com/in/jeff-nader-8431ab385" 
-            className="btn-contact secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Linkedin size={20} />
-            LinkedIn
-          </a>
-        </div>
+      <h2 className="section-title">Get in Touch</h2>
+      <p className="contact-desc">
+        Have a project in mind? Let's build something together.
+      </p>
+      <div className="contact-links">
+        <a href="mailto:jeffnader30@gmail.com" className="contact-link primary">
+          <Mail size={18} />
+          <span>Email Me</span>
+        </a>
+        <a href="https://wa.me/96176369668" className="contact-link" target="_blank" rel="noopener noreferrer">
+          <MessageCircle size={18} />
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://github.com/Jeff-N30" className="contact-link" target="_blank" rel="noopener noreferrer">
+          <Github size={18} />
+          <span>GitHub</span>
+        </a>
+        <a href="https://www.linkedin.com/in/jeff-nader-8431ab385" className="contact-link" target="_blank" rel="noopener noreferrer">
+          <Linkedin size={18} />
+          <span>LinkedIn</span>
+        </a>
       </div>
     </div>
 
+    <footer className="footer">
+      <span>&copy; {new Date().getFullYear()} Jeff Nader</span>
+    </footer>
+
     <style jsx>{`
-      .contact-section {
-        padding: 5rem 0;
-        position: relative;
+      .contact {
+        padding: 80px 24px 60px;
+        border-top: 1px solid #1a1a1a;
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 800px;
         margin: 0 auto;
-        padding: 0 2rem;
-      }
-
-      .contact-content {
         text-align: center;
-        max-width: 700px;
-        margin: 0 auto;
       }
 
       .section-title {
-        text-align: center;
-        font-size: clamp(2.5rem, 5vw, 3.5rem);
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        letter-spacing: -0.02em;
-        color: #ffffff;
+        font-size: 32px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0 0 16px;
+        letter-spacing: -1px;
       }
 
-      .contact-subtitle {
-        font-size: 1.25rem;
-        color: #a1a1a6;
-        margin-bottom: 3rem;
-        line-height: 1.5;
-        letter-spacing: -0.01em;
+      .contact-desc {
+        font-size: 16px;
+        color: #666;
+        margin: 0 0 40px;
+        line-height: 1.6;
       }
 
-      .contact-buttons {
+      .contact-links {
         display: flex;
-        gap: 1rem;
         justify-content: center;
+        gap: 12px;
         flex-wrap: wrap;
       }
 
-      .btn-contact {
-        display: flex;
+      .contact-link {
+        display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.875rem 1.75rem;
-        border-radius: 980px;
-        font-weight: 400;
-        font-size: 1rem;
+        gap: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
         text-decoration: none;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        border: none;
-        letter-spacing: -0.01em;
-      }
-
-      .btn-contact.primary {
-        background: #ffffff;
-        color: #000000;
-      }
-
-      .btn-contact.primary:hover {
-        background: #e5e5e7;
-        transform: scale(1.02);
-      }
-
-      .btn-contact.secondary {
         background: transparent;
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid #222;
+        border-radius: 8px;
+        transition: all 0.15s ease;
       }
 
-      .btn-contact.secondary:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.4);
+      .contact-link:hover {
+        border-color: #444;
+        background: rgba(255, 255, 255, 0.04);
       }
 
-      @media (max-width: 768px) {
-        .contact-buttons {
-          flex-direction: column;
-          align-items: stretch;
-          max-width: 300px;
-          margin: 0 auto;
-        }
+      .contact-link.primary {
+        background: #fff;
+        color: #000;
+        border-color: #fff;
       }
 
-      @media (max-width: 480px) {
-        .container {
-          padding: 0 1.25rem;
+      .contact-link.primary:hover {
+        background: #e5e5e5;
+        border-color: #e5e5e5;
+      }
+
+      .footer {
+        margin-top: 80px;
+        padding-top: 24px;
+        border-top: 1px solid #1a1a1a;
+        text-align: center;
+      }
+
+      .footer span {
+        font-size: 13px;
+        color: #444;
+      }
+
+      @media (max-width: 600px) {
+        .contact {
+          padding: 80px 20px 40px;
         }
 
         .section-title {
-          font-size: 2rem;
+          font-size: 28px;
+        }
+
+        .contact-desc {
+          font-size: 15px;
+          margin-bottom: 32px;
+        }
+
+        .contact-links {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .contact-link {
+          width: 100%;
+          justify-content: center;
+          padding: 14px 20px;
+        }
+
+        .footer {
+          margin-top: 60px;
         }
       }
     `}</style>

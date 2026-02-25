@@ -2,104 +2,101 @@ import React from 'react';
 
 export const NavBar = ({ activeSection, scrollToSection, isLoaded }) => (
   <nav className={`navbar ${isLoaded ? 'loaded' : ''}`}>
-    <div className="nav-container">
-      <div className="nav-content">
-        <div className="nav-links">
-          {['Home', 'Projects', 'Skills', 'Contact'].map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollToSection(item.toLowerCase())}
-              className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`}
-            >
-              {item}
-              {activeSection === item.toLowerCase() && (
-                <div className="nav-indicator" />
-              )}
-            </button>
-          ))}
-        </div>
+    <div className="nav-inner">
+      <span className="logo">JN</span>
+      <div className="nav-links">
+        {['Home', 'Projects', 'Skills', 'Contact'].map((item) => (
+          <button
+            key={item}
+            onClick={() => scrollToSection(item.toLowerCase())}
+            className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`}
+          >
+            {item}
+          </button>
+        ))}
       </div>
     </div>
 
     <style jsx>{`
-      /* Navigation - iOS Style Dark Mode */
       .navbar {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 100;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.92);
+        border-bottom: 1px solid #1a1a1a;
+        opacity: 0;
         transform: translateY(-100%);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.3s ease, transform 0.3s ease;
       }
 
       .navbar.loaded {
+        opacity: 1;
         transform: translateY(0);
       }
 
-      .nav-container {
+      .nav-inner {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 2rem;
+        padding: 0 24px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
 
-      .nav-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 60px;
+      .logo {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.5px;
       }
 
       .nav-links {
         display: flex;
-        gap: 2rem;
+        gap: 4px;
       }
 
       .nav-link {
-        position: relative;
-        background: none;
+        background: transparent;
         border: none;
-        color: #e5e5e7;
-        font-size: 0.875rem;
-        font-weight: 400;
-        letter-spacing: -0.01em;
+        color: #888;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 8px 16px;
         cursor: pointer;
-        padding: 0.5rem 0.75rem;
-        border-radius: 8px;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: color 0.15s ease, background 0.15s ease;
+        border-radius: 6px;
       }
 
       .nav-link:hover {
-        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
       }
 
       .nav-link.active {
-        color: #ffffff;
-        font-weight: 500;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
       }
 
-      .nav-indicator {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #ffffff;
-        border-radius: 2px 2px 0 0;
-      }
+      @media (max-width: 600px) {
+        .nav-inner {
+          padding: 0 16px;
+          height: 52px;
+        }
 
-      @media (max-width: 768px) {
+        .logo {
+          font-size: 16px;
+        }
+
         .nav-links {
-          gap: 1rem;
+          gap: 2px;
         }
 
         .nav-link {
-          font-size: 0.8125rem;
-          padding: 0.375rem 0.5rem;
+          font-size: 13px;
+          padding: 6px 10px;
         }
       }
     `}</style>
