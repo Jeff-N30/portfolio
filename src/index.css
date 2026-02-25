@@ -4,6 +4,24 @@
   box-sizing: border-box;
 }
 
+/* Remove custom scrollbar styling - use default OS scrollbar */
+*::-webkit-scrollbar {
+  width: auto;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: auto;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif;
@@ -11,8 +29,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #000000;
   color: #ffffff;
-}
-
-html {
-  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
