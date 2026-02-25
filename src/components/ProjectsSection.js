@@ -1,31 +1,40 @@
-import React from 'react';
-import { Code, Database, Rocket, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { Wine, FlaskConical, Circle } from 'lucide-react';
 
 export const ProjectsSection = () => {
+  const [flippedCards, setFlippedCards] = useState({});
+
+  const toggleCard = (index) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
   const projects = [
     {
-      title: "E-Commerce Platform",
-      description: "Full-stack MERN application with payment integration",
-      tech: ["React", "Node.js", "MongoDB", "Stripe"],
-      type: "fullstack"
+      title: "The Wine Room",
+      subtitle: "E-Commerce Platform",
+      description: "Full-featured e-commerce platform with product catalog, cart system, and secure checkout. Built with modern tech stack for optimal performance.",
+      features: ["Product Catalog", "Cart System", "Secure Checkout", "Modern UI"],
+      tech: ["FastAPI", "React", "Vite", "Node.js"],
+      icon: "wine"
     },
     {
-      title: "Real-time Chat App",
-      description: "WebSocket-powered chat with rooms and file sharing",
-      tech: ["Socket.io", "Express", "React", "PostgreSQL"],
-      type: "fullstack"
+      title: "Metis",
+      subtitle: "Chemical Formulation Database",
+      description: "Metis is a secure chemical formulation database with triple-layer encryption, cross-platform support, and complete workflow management for inventory, projects, testing, production, and reporting.",
+      features: ["Secure Data Management", "Cross-Platform Support", "Portable Architecture", "Professional Interface", "Complete Workflow"],
+      tech: ["Node.js 18+", "Rust", "Tauri", "React", "Sqlite", "SQLCipher", "VeraCrypt"],
+      icon: "flask"
     },
     {
-      title: "3D Portfolio Showcase",
-      description: "Interactive 3D website using Three.js",
-      tech: ["Three.js", "React", "WebGL", "GSAP"],
-      type: "frontend"
-    },
-    {
-      title: "API Gateway Service",
-      description: "Microservices architecture with rate limiting",
-      tech: ["Node.js", "Redis", "Docker", "AWS"],
-      type: "backend"
+      title: "CourtVision",
+      subtitle: "AI Basketball Analytics Platform",
+      description: "AI-powered basketball analytics platform delivering real-time insights, advanced statistics, and visual heatmaps. Transforms live basketball footage into 2D visualized heatmaps for coaches, athletes, and game analysis.",
+      features: ["Live Score", "Analytics", "Shot Chart"],
+      tech: ["YOLOv8", "Streamlit", "OpenCV", "PyTorch", "NumPy", "Img Coords"],
+      icon: "basketball"
     }
   ];
 
@@ -39,28 +48,52 @@ export const ProjectsSection = () => {
           {projects.map((project, index) => (
             <div
               key={index}
-              className={`project-card ${project.type}`}
+              className="project-card-container"
               style={{ 
                 animationDelay: `${index * 0.1}s`,
                 animationFillMode: 'forwards'
               }}
+              onClick={() => toggleCard(index)}
             >
-              <div className="project-header">
-                <div className={`project-icon ${project.type}`}>
-                  {project.type === 'fullstack' ? <Rocket size={24} /> :
-                   project.type === 'frontend' ? <Code size={24} /> :
-                   <Database size={24} />}
+              <div className={`project-card ${flippedCards[index] ? 'flipped' : ''}`}>
+                {/* Front of card */}
+                <div className="card-face card-front">
+                  <div className="project-header">
+                    <div className="project-icon">
+                      {project.icon === 'wine' ? <Wine size={24} /> :
+                       project.icon === 'flask' ? <FlaskConical size={24} /> :
+                       <Circle size={24} />}
+                    </div>
+                  </div>
+                  <h3 className="project-title">{project.title}</h3>
+                  <p className="project-subtitle">{project.subtitle}</p>
+                  <div className="tap-hint">Tap to explore</div>
                 </div>
-                <ExternalLink size={20} className="external-link" />
-              </div>
-              <h3 className="project-title">{project.title}</h3>
-              <p className="project-description">{project.description}</p>
-              <div className="tech-stack">
-                {project.tech.map((tech, techIndex) => (
-                  <span key={techIndex} className="tech-tag">
-                    {tech}
-                  </span>
-                ))}
+
+                {/* Back of card */}
+                <div className="card-face card-back">
+                  <div className="back-header">
+                    <h3 className="project-title-back">{project.title}</h3>
+                  </div>
+                  <p className="project-description">{project.description}</p>
+                  
+                  {project.features && (
+                    <div className="features-list">
+                      {project.features.map((feature, fIndex) => (
+                        <span key={fIndex} className="feature-item">• {feature}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="tech-stack">
+                    {project.tech.map((tech, techIndex) => (
+                      <span key={techIndex} className="tech-tag">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="tap-hint-back">Tap to close</div>
+                </div>
               </div>
             </div>
           ))}
@@ -94,83 +127,203 @@ export const ProjectsSection = () => {
           gap: 1.5rem;
         }
 
-        .project-card {
-          background: #161616;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          padding: 1.75rem;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        .project-card-container {
+          perspective: 1000px;
+          cursor: pointer;
+          height: 400px;
         }
 
-        .project-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+        .project-card {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card.flipped {
+          transform: rotateY(180deg);
+        }
+
+        .card-face {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          background: #161616;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 18px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+          display: flex;
+          flex-direction: column;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-front {
+          padding: 2rem;
+        }
+
+        .card-back {
+          padding: 1.5rem;
+        }
+
+        .project-card-container:hover .card-face {
           border-color: rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-front {
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+
+        .card-back {
+          transform: rotateY(180deg);
+          overflow-y: auto;
+          overflow-x: hidden;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        .card-back::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .card-back::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .card-back::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 3px;
+        }
+
+        .card-back::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.3);
         }
 
         .project-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.25rem;
+          margin-bottom: 1.5rem;
         }
 
         .project-icon {
-          width: 40px;
-          height: 40px;
-          border-radius: 8px;
+          width: 56px;
+          height: 56px;
+          border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
           background: #2c2c2e;
           color: #ffffff;
-        }
-
-        .external-link {
-          color: #a1a1a6;
-          transition: color 0.2s;
-        }
-
-        .project-card:hover .external-link {
-          color: #ffffff;
+          margin: 0 auto;
         }
 
         .project-title {
-          font-size: 1.375rem;
+          font-size: 1.75rem;
           font-weight: 600;
-          margin-bottom: 0.75rem;
-          letter-spacing: -0.01em;
+          margin-bottom: 0.5rem;
+          letter-spacing: -0.02em;
           color: #ffffff;
+        }
+
+        .project-subtitle {
+          font-size: 1rem;
+          color: #a1a1a6;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+        }
+
+        .tap-hint {
+          margin-top: 2rem;
+          font-size: 0.875rem;
+          color: #6e6e73;
+          font-weight: 400;
+        }
+
+        .back-header {
+          margin-bottom: 0.75rem;
+          flex-shrink: 0;
+        }
+
+        .project-title-back {
+          font-size: 1.25rem;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          color: #ffffff;
+          margin-bottom: 0;
         }
 
         .project-description {
           color: #a1a1a6;
-          margin-bottom: 1.5rem;
-          line-height: 1.5;
-          font-size: 0.9375rem;
+          line-height: 1.4;
+          font-size: 0.875rem;
+          margin-bottom: 0.875rem;
+          flex-shrink: 0;
+        }
+
+        .features-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.375rem;
+          margin-bottom: 0.875rem;
+          flex-shrink: 0;
+        }
+
+        .feature-item {
+          color: #86868b;
+          font-size: 0.8125rem;
+          line-height: 1.3;
         }
 
         .tech-stack {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5rem;
+          gap: 0.375rem;
+          flex-shrink: 0;
         }
 
         .tech-tag {
-          padding: 0.375rem 0.75rem;
-          background: #2c2c2e;
+          padding: 0.375rem 0.625rem;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 6px;
-          font-size: 0.8125rem;
+          font-size: 0.75rem;
           font-weight: 500;
           color: #ffffff;
-          font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
           letter-spacing: -0.01em;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tech-tag:hover {
+          background: rgba(255, 255, 255, 0.12);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tap-hint-back {
+          margin-top: 0.75rem;
+          font-size: 0.75rem;
+          color: #6e6e73;
+          text-align: center;
+          flex-shrink: 0;
         }
 
         @media (max-width: 768px) {
           .projects-grid {
             grid-template-columns: 1fr;
+          }
+
+          .project-card-container {
+            height: 380px;
+          }
+
+          .card-front {
+            padding: 1.75rem;
+          }
+
+          .card-back {
+            padding: 1.25rem;
           }
         }
 
@@ -179,12 +332,28 @@ export const ProjectsSection = () => {
             padding: 0 1.25rem;
           }
 
-          .project-card {
+          .section-title {
+            font-size: 2rem;
+          }
+
+          .project-card-container {
+            height: 360px;
+          }
+
+          .card-front {
             padding: 1.5rem;
           }
 
-          .section-title {
-            font-size: 2rem;
+          .card-back {
+            padding: 1.125rem;
+          }
+
+          .project-title {
+            font-size: 1.5rem;
+          }
+
+          .project-title-back {
+            font-size: 1.125rem;
           }
         }
       `}</style>

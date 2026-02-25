@@ -2,8 +2,8 @@ import React from 'react';
 
 export const SkillsSection = () => {
   const skills = {
-    frontend: ["Html", "Css", "Javascript", "React", "Tailwind"],
-    backend: ["Node.js", "MongoDB", "MySQL", "GraphQL"],
+    frontend: ["React", "JavaScript", "CSS/Tailwind"],
+    backend: ["Node.js", ".NET", "MongoDB", "MySQL", "GraphQL"],
   };
 
   return (
@@ -21,20 +21,7 @@ export const SkillsSection = () => {
               <div className="skills-list">
                 {skillList.map((skill, skillIndex) => (
                   <div key={skillIndex} className="skill-item">
-                    <div className="skill-info">
-                      <span className="skill-name">{skill}</span>
-                      <span className="skill-percent">90%</span>
-                    </div>
-                    <div className="skill-bar">
-                      <div
-                        className={`skill-progress ${category}`}
-                        style={{ 
-                          width: '90%',
-                          animationDelay: `${skillIndex * 0.1}s`,
-                          animationFillMode: 'forwards'
-                        }}
-                      />
-                    </div>
+                    <span className="skill-name">{skill}</span>
                   </div>
                 ))}
               </div>
@@ -90,45 +77,29 @@ export const SkillsSection = () => {
 
         .skills-list {
           display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
+          flex-wrap: wrap;
+          gap: 0.75rem;
         }
 
         .skill-item {
-          position: relative;
+          padding: 0.625rem 1rem;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 8px;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .skill-info {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 0.625rem;
+        .skill-item:hover {
+          background: rgba(255, 255, 255, 0.12);
+          border-color: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
         }
 
         .skill-name {
           color: #ffffff;
           font-weight: 500;
           font-size: 0.9375rem;
-        }
-
-        .skill-percent {
-          color: #a1a1a6;
-          font-size: 0.875rem;
-          font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-        }
-
-        .skill-bar {
-          width: 100%;
-          background: #2c2c2e;
-          border-radius: 4px;
-          height: 6px;
-          overflow: hidden;
-        }
-
-        .skill-progress {
-          height: 100%;
-          background: #ffffff;
-          border-radius: 4px;
-          transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+          letter-spacing: -0.01em;
         }
 
         @media (max-width: 768px) {
