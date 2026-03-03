@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Loading } from './components/Loading';
 import { NavBar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
+import { AboutSection } from './components/AboutSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { SkillsSection } from './components/SkillsSection';
 import { ContactSection } from './components/ContactSection';
@@ -16,22 +17,20 @@ const Portfolio = () => {
       document.body.style.overflow = 'hidden';
       return;
     }
-    
+
     document.body.style.overflow = '';
 
-    // Simple scroll spy - no blocking, just tracking
     const handleScroll = () => {
-      const sections = ['home', 'projects', 'skills', 'contact'];
+      const sections = ['home', 'about', 'projects', 'skills', 'contact'];
       const scrollPos = window.scrollY + 150;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
-      
-      // If near bottom, activate contact
+
       if (window.scrollY + windowHeight >= documentHeight - 100) {
         setActiveSection('contact');
         return;
       }
-      
+
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -87,12 +86,8 @@ const Portfolio = () => {
   };
 
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 60;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
   if (showLoading) {
@@ -101,10 +96,13 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio">
+      <div className="grain-overlay"></div>
+
       <NavBar activeSection={activeSection} scrollToSection={scrollToSection} isLoaded={isLoaded} />
-      
+
       <main>
         <HeroSection handleResumeDownload={handleResumeDownload} scrollToSection={scrollToSection} isLoaded={isLoaded} />
+        <AboutSection />
         <ProjectsSection />
         <SkillsSection />
         <ContactSection />
@@ -113,13 +111,45 @@ const Portfolio = () => {
       <style jsx>{`
         .portfolio {
           min-height: 100vh;
-          background: #000;
-          color: #fff;
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+          background-image: url('/img/mountain.JPG');
+          background-attachment: fixed;
+          background-size: cover;
+          background-position: center 30%;
+          color: #F5E6CA;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          position: relative;
+        }
+
+        .portfolio::before {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.90) 0%,
+            rgba(0, 0, 0, 0.84) 40%,
+            rgba(0, 0, 0, 0.88) 100%
+          );
+          z-index: 0;
+          pointer-events: none;
         }
 
         main {
           position: relative;
+          z-index: 1;
+        }
+
+        .grain-overlay {
+          position: fixed;
+          inset: -50%;
+          width: 200%;
+          height: 200%;
+          pointer-events: none;
+          z-index: 9998;
+          opacity: 0.018;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-repeat: repeat;
+          animation: grain 6s steps(8) infinite;
         }
       `}</style>
     </div>

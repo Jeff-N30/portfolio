@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --cream: #F5E6CA;
+  --cream-rgb: 245, 230, 202;
+  --bg: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-elevated: #111111;
+  --border: rgba(245, 230, 202, 0.08);
+  --border-hover: rgba(245, 230, 202, 0.18);
+  --text-secondary: #a09080;
+  --text-muted: #8a8078;
+  --text-dim: #5a5248;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(245, 230, 202, 0.1);
+  --glass-hover: rgba(245, 230, 202, 0.07);
+  --ios-spring: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --ios-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,15 +28,192 @@
 
 html {
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #000;
-  color: #fff;
+  background: var(--bg);
+  color: var(--cream);
   overflow-x: hidden;
   line-height: 1.5;
+  font-weight: 500;
+}
+
+::selection {
+  background: rgba(245, 230, 202, 0.15);
+  color: var(--cream);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 230, 202, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 230, 202, 0.25);
+}
+
+/* ─── Keyframes ──────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* iOS-style spring entry */
+@keyframes springIn {
+  0%   { opacity: 0; transform: scale(0.82) translateY(20px); }
+  60%  { opacity: 1; transform: scale(1.03) translateY(-3px); }
+  80%  { transform: scale(0.99) translateY(1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* iOS sheet slide-up */
+@keyframes slideUpSpring {
+  0%   { opacity: 0; transform: translateY(60px); }
+  65%  { opacity: 1; transform: translateY(-5px); }
+  82%  { transform: translateY(2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* iOS name reveal */
+@keyframes nameReveal {
+  0%   { opacity: 0; transform: translateY(50px) skewY(4deg); }
+  70%  { opacity: 1; transform: translateY(-4px) skewY(-0.5deg); }
+  100% { opacity: 1; transform: translateY(0) skewY(0); }
+}
+
+/* Gentle breathe — iOS focus ring style */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.018); }
+}
+
+/* Continuous float for cards / badges */
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+/* Glass shine sweep */
+@keyframes glassShine {
+  0%   { left: -120%; }
+  100% { left: 140%; }
+}
+
+/* Glow pulse */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245, 230, 202, 0.03); }
+  50%       { box-shadow: 0 0 60px rgba(245, 230, 202, 0.1), 0 0 100px rgba(245, 230, 202, 0.04); }
+}
+
+/* Ripple on click */
+@keyframes ripple {
+  0%   { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+/* Rotating gradient for orb rings */
+@keyframes rotateGradient {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Orbs — varied durations for organic feel */
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(40px, -55px) scale(1.06); }
+  50%  { transform: translate(-25px, -70px) scale(0.94); }
+  75%  { transform: translate(-50px, -20px) scale(1.03); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(-50px, 35px) scale(0.97); }
+  50%  { transform: translate(40px, 60px) scale(1.05); }
+  75%  { transform: translate(60px, -15px) scale(0.96); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(60px, 35px) scale(1.04); }
+  66%  { transform: translate(-35px, -50px) scale(0.95); }
+}
+
+@keyframes orbFloat4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30%  { transform: translate(-30px, -30px) scale(1.02); }
+  60%  { transform: translate(45px, 20px) scale(0.98); }
+}
+
+@keyframes orbFloat5 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%  { transform: translate(20px, -40px) scale(1.03); }
+  80%  { transform: translate(-40px, 15px) scale(0.97); }
+}
+
+/* Grain noise */
+@keyframes grain {
+  0%,100% { transform: translate(0,0); }
+  10%  { transform: translate(-5%, -10%); }
+  20%  { transform: translate(-15%, 5%); }
+  30%  { transform: translate(7%, -25%); }
+  40%  { transform: translate(-5%, 25%); }
+  50%  { transform: translate(-15%, 10%); }
+  60%  { transform: translate(15%, 0%); }
+  70%  { transform: translate(0%, 15%); }
+  80%  { transform: translate(3%, 35%); }
+  90%  { transform: translate(-10%, 10%); }
+}
+
+/* Icon pulse ring */
+@keyframes iconPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 230, 202, 0.1); }
+  50%       { box-shadow: 0 0 0 10px rgba(245, 230, 202, 0); }
+}
+
+/* Stagger shimmer for text lines */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Editorial text cascade */
+@keyframes textCascade {
+  0%   { opacity: 0; transform: translateX(-16px); }
+  60%  { opacity: 1; transform: translateX(2px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Metallic shine (kept for loading bar) */
+@keyframes metallicShine {
+  0%   { left: -100%; }
+  100% { left: 200%; }
 }
