@@ -200,6 +200,7 @@ export const AboutSection = () => {
         .ab-card {
           width: 100%;
           height: 100%;
+          -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
           transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
           border-radius: 28px;
@@ -235,6 +236,13 @@ export const AboutSection = () => {
           box-shadow:
             0 24px 70px rgba(0, 0, 0, 0.6),
             inset 0 1px 0 rgba(245, 230, 202, 0.16);
+        }
+
+        /* Safari requires an explicit transform on the front face for
+           backface-visibility: hidden to work. Without it Safari skips the
+           compositing layer and the back-face text bleeds through mirrored. */
+        .ab-front {
+          transform: rotateY(0deg);
         }
 
         .ab-back {

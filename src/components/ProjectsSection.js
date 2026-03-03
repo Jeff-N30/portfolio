@@ -213,6 +213,7 @@ export const ProjectsSection = () => {
           position: relative;
           width: 100%;
           height: 100%;
+          -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
           transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
           z-index: 1;
@@ -274,6 +275,9 @@ export const ProjectsSection = () => {
           justify-content: center;
           align-items: center;
           text-align: center;
+          /* Safari needs an explicit transform on the front face for
+             backface-visibility: hidden to create the compositing layer */
+          transform: rotateY(0deg);
         }
 
         .proj-icon {

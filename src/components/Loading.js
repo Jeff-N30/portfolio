@@ -3,9 +3,17 @@ import { useEffect, useState } from "react";
 export const Loading = ({ onCom }) => {
     const [text, setText] = useState("");
     const [exiting, setExiting] = useState(false);
+    const [fontsReady, setFontsReady] = useState(false);
     const welcome = "<Jeff Nader/>";
 
+    // Wait for web fonts to load before starting the typing animation,
+    // so the user never sees a flash from fallback → Cormorant Garamond.
     useEffect(() => {
+        document.fonts.ready.then(() => setFontsReady(true));
+    }, []);
+
+    useEffect(() => {
+        if (!fontsReady) return;
         let i = 0;
         const interval = setInterval(() => {
             setText(welcome.substring(0, i));
@@ -19,7 +27,7 @@ export const Loading = ({ onCom }) => {
             }
         }, 100);
         return () => clearInterval(interval);
-    }, [onCom]);
+    }, [fontsReady, onCom]);
 
     return (
         <div className={`loading-screen ${exiting ? 'exit' : ''}`}>
