@@ -205,10 +205,6 @@ export const AboutSection = () => {
           border-radius: 28px;
         }
 
-        .ab-card-wrap:hover .ab-card:not(.ab-flipped) {
-          /* tilt handled inline, but keep transition smooth */
-          transition: transform 0.15s ease-out;
-        }
 
         /* ── Both faces ── */
         .ab-face {
@@ -445,6 +441,14 @@ export const AboutSection = () => {
         }
 
         /* ── Mobile ── */
+        @media (max-width: 768px) {
+          /* Reduce blur intensity on mobile — keeps the glass look, cuts GPU compositing cost */
+          .ab-face {
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+          }
+        }
+
         @media (max-width: 600px) {
           .ab-section {
             padding: 80px 20px;

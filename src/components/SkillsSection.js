@@ -233,6 +233,13 @@ export const SkillsSection = () => {
           .sk-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
+        @media (max-width: 768px) {
+          .sk-group-inner {
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+          }
+        }
+
         @media (max-width: 600px) {
           .sk-section { padding: 80px 20px; min-height: auto; }
           .sk-title { font-size: 34px; }

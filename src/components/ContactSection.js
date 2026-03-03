@@ -264,6 +264,13 @@ export const ContactSection = () => {
           letter-spacing: 0.5px;
         }
 
+        @media (max-width: 768px) {
+          .ct-glass {
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+          }
+        }
+
         @media (max-width: 600px) {
           .ct-section { padding: 80px 20px 60px; min-height: auto; }
           .ct-glass { padding: 36px 24px; border-radius: 22px; }

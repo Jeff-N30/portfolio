@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap');
+/* Google Fonts loaded via <link> tags in index.html (non-blocking) */
 
 :root {
   --cream: #F5E6CA;
@@ -217,3 +217,13 @@ body {
   0%   { left: -100%; }
   100% { left: 200%; }
 }
+
+/* ─── Mobile performance: pause heavy animations ─── */
+@media (max-width: 768px) {
+  /* Grain texture runs a continuous translate animation on a 200% element — not visible,
+     costs paint on every frame. Pause it on mobile. */
+  .grain-overlay {
+    animation-play-state: paused;
+  }
+}
+

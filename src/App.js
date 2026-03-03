@@ -151,6 +151,14 @@ const Portfolio = () => {
           background-repeat: repeat;
           animation: grain 6s steps(8) infinite;
         }
+
+        @media (max-width: 768px) {
+          /* background-attachment: fixed forces full repaint on every scroll frame on iOS.
+             Switch to scroll — the mountain bg still shows, just doesn't parallax. */
+          .portfolio {
+            background-attachment: scroll;
+          }
+        }
       `}</style>
     </div>
   );

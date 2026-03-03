@@ -183,6 +183,8 @@ export const ProjectsSection = () => {
           transition:
             opacity var(--dur, 0.65s) cubic-bezier(0.28, 0.11, 0.32, 1),
             transform var(--dur, 0.65s) cubic-bezier(0.28, 0.11, 0.32, 1);
+          /* Tell browser this is a tap target — no scroll-conflict delay */
+          touch-action: manipulation;
         }
         .proj-card-wrap.proj-visible {
           opacity: 1;
@@ -427,6 +429,22 @@ export const ProjectsSection = () => {
 
         @media (max-width: 900px) {
           .proj-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+          .proj-face {
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+          }
+          /* overflow-y: auto on the back face consumes touch events on mobile,
+             preventing the onClick from firing and closing the card */
+          .proj-back {
+            overflow: hidden;
+          }
+          /* Hover tilt fires on touch-start on mobile, causing a 3D glitch before flip */
+          .proj-card-wrap:hover .proj-card:not(.proj-flipped) {
+            transform: none;
+          }
         }
 
         @media (max-width: 600px) {
