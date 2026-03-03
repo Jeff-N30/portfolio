@@ -96,6 +96,8 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio">
+      {/* Fixed background image — works on iOS Safari unlike background-attachment: fixed */}
+      <div className="bg-fixed"></div>
       <div className="grain-overlay"></div>
 
       <NavBar activeSection={activeSection} scrollToSection={scrollToSection} isLoaded={isLoaded} />
@@ -111,13 +113,22 @@ const Portfolio = () => {
       <style jsx>{`
         .portfolio {
           min-height: 100vh;
-          background-image: url('/img/mountain.JPG');
-          background-attachment: fixed;
-          background-size: cover;
-          background-position: center 30%;
           color: #F5E6CA;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
           position: relative;
+        }
+
+        /* Separate fixed div for the background image.
+           position: fixed on a div works correctly on ALL browsers (including iOS Safari),
+           unlike background-attachment: fixed which iOS Safari ignores. */
+        .bg-fixed {
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          background-image: url('/img/mountain.JPG');
+          background-size: cover;
+          background-position: center 30%;
+          pointer-events: none;
         }
 
         .portfolio::before {
@@ -150,14 +161,6 @@ const Portfolio = () => {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-repeat: repeat;
           animation: grain 6s steps(8) infinite;
-        }
-
-        @media (max-width: 768px) {
-          /* background-attachment: fixed forces full repaint on every scroll frame on iOS.
-             Switch to scroll — the mountain bg still shows, just doesn't parallax. */
-          .portfolio {
-            background-attachment: scroll;
-          }
         }
       `}</style>
     </div>
