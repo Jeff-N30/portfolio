@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Wine, FlaskConical, Circle } from 'lucide-react';
+import { Wine, FlaskConical, Circle, Building2, Plane } from 'lucide-react';
 
 export const ProjectsSection = () => {
   const [flippedCards, setFlippedCards] = useState({});
@@ -45,11 +45,27 @@ export const ProjectsSection = () => {
       features: ["Live Tracking", "Shot Analysis", "Heatmap Generation"],
       tech: ["YOLOv8", "Streamlit", "OpenCV", "PyTorch"],
       icon: "circle"
+    },
+    {
+      title: "Machwerni",
+      subtitle: "Venue & Booking Platform",
+      description: "Multi-role platform for venue management, customer bookings, loyalty programs, and vendor management with real-time booking and rewards system.",
+      features: ["Multi-role Auth", "Real-time Bookings", "Loyalty Cards", "Admin Dashboard"],
+      tech: ["FastAPI", "React 19", "PostgreSQL", "Docker", "Framer Motion"],
+      icon: "building"
+    },
+    {
+      title: "Beyroute",
+      subtitle: "Luxury Concierge Platform",
+      description: "Premium concierge platform for seamless booking, itinerary planning, and VIP client management.",
+      features: ["VIP CRM", "Itinerary Builder", "Real-time Notifications", "Workflow Engine"],
+      tech: ["FastAPI", "React 19", "PostgreSQL", "Redis", "WebSocket"],
+      icon: "plane"
     }
   ];
 
-  const delays = [0.12, 0.26, 0.42];
-  const durations = [0.65, 0.72, 0.60];
+  const delays = [0.12, 0.26, 0.42, 0.55, 0.68];
+  const durations = [0.65, 0.72, 0.60, 0.75, 0.70];
 
   return (
     <section id="projects" className="proj-section" ref={sectionRef}>
@@ -79,6 +95,8 @@ export const ProjectsSection = () => {
                   <div className="proj-icon">
                     {project.icon === 'wine' ? <Wine size={22} /> :
                      project.icon === 'flask' ? <FlaskConical size={22} /> :
+                     project.icon === 'building' ? <Building2 size={22} /> :
+                     project.icon === 'plane' ? <Plane size={22} /> :
                      <Circle size={22} />}
                   </div>
                   <h3 className="proj-name">{project.title}</h3>
