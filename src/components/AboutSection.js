@@ -202,12 +202,11 @@ export const AboutSection = () => {
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
           border-radius: 28px;
-          border: 1px solid rgba(245, 230, 202, 0.1);
-          background: rgba(255, 255, 255, 0.045);
+          border: 1px solid rgba(245, 230, 202, 0.14);
+          background: rgba(255, 255, 255, 0.07);
           -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
-          /* Clean shadow — no metallic inset top line */
-          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.32);
           padding: 44px 48px;
           display: flex;
           flex-direction: column;

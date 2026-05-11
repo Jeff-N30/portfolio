@@ -98,6 +98,7 @@ export const ProjectsSection = () => {
   const [active, setActive] = useState(null);
   const [displayed, setDisplayed] = useState(null);
   const sectionRef = useRef(null);
+  const panelRef = useRef(null);
   const exitTimer = useRef(null);
 
   /* Outro: observer stays alive so isVisible toggles on scroll out */
@@ -119,6 +120,18 @@ export const ProjectsSection = () => {
       exitTimer.current = setTimeout(() => setDisplayed(null), 280);
     }
     return () => clearTimeout(exitTimer.current);
+  }, [active]);
+
+  /* On mobile: scroll so panel bottom sits near the viewport bottom (never jumps to page top) */
+  useEffect(() => {
+    if (active !== null && panelRef.current && window.innerWidth <= 700) {
+      const timer = setTimeout(() => {
+        const rect = panelRef.current.getBoundingClientRect();
+        const target = window.scrollY + rect.bottom - window.innerHeight + 70;
+        window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      }, 80);
+      return () => clearTimeout(timer);
+    }
   }, [active]);
 
   const toggle = useCallback(
@@ -167,7 +180,7 @@ export const ProjectsSection = () => {
           </div>
 
           {/* Right: detail panel — pops from left via spring easing */}
-          <div className={`pj-panel ${active !== null ? 'pj-panel--open' : ''}`} aria-live="polite">
+          <div className={`pj-panel ${active !== null ? 'pj-panel--open' : ''}`} aria-live="polite" ref={panelRef}>
             {displayed !== null && (
               <ProjectCard key={displayed} project={PROJECTS[displayed]} />
             )}
@@ -270,8 +283,8 @@ export const ProjectsSection = () => {
           align-items: center;
           gap: 10px;
           padding: 12px 14px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(245, 230, 202, 0.08);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(245, 230, 202, 0.11);
           border-radius: 14px;
           cursor: pointer;
           text-align: left;
@@ -405,12 +418,12 @@ export const ProjectsSection = () => {
         .pj-card {
           position: relative;
           padding: 28px 30px;
-          background: rgba(255, 255, 255, 0.04);
+          background: rgba(255, 255, 255, 0.06);
           -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(245, 230, 202, 0.09);
+          border: 1px solid rgba(245, 230, 202, 0.13);
           border-radius: 22px;
-          box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 8px 36px rgba(0, 0, 0, 0.28);
           overflow: hidden;
           /* Initial: tucked left, slightly small — never scale(0) */
           opacity: 0;

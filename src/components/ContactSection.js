@@ -91,13 +91,13 @@ export const ContactSection = () => {
           position: relative;
           text-align: center;
           padding: 52px 44px;
-          background: rgba(255, 255, 255, 0.04);
+          background: rgba(255, 255, 255, 0.07);
           -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(245, 230, 202, 0.09);
+          border: 1px solid rgba(245, 230, 202, 0.14);
           border-radius: 28px;
           overflow: hidden;
-          box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 8px 36px rgba(0, 0, 0, 0.28);
           transition:
             border-color 0.22s ease-out,
             box-shadow 0.22s ease-out;
@@ -219,9 +219,9 @@ export const ContactSection = () => {
           margin-left: 0;
           letter-spacing: 0.1px;
           transition:
-            max-width 380ms cubic-bezier(0.23, 1, 0.32, 1),
-            opacity 280ms ease-out 60ms,
-            margin-left 380ms cubic-bezier(0.23, 1, 0.32, 1);
+            max-width 580ms cubic-bezier(0.23, 1, 0.32, 1),
+            opacity 420ms ease-out 80ms,
+            margin-left 580ms cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         @media (hover: hover) and (pointer: fine) {

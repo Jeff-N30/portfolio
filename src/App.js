@@ -137,9 +137,9 @@ const Portfolio = () => {
           inset: 0;
           background: linear-gradient(
             180deg,
-            rgba(0, 0, 0, 0.90) 0%,
-            rgba(0, 0, 0, 0.84) 40%,
-            rgba(0, 0, 0, 0.88) 100%
+            rgba(0, 0, 0, 0.76) 0%,
+            rgba(0, 0, 0, 0.68) 40%,
+            rgba(0, 0, 0, 0.73) 100%
           );
           z-index: 0;
           pointer-events: none;

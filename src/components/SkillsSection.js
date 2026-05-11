@@ -17,8 +17,6 @@ const SKILLS = {
 
 const CATEGORIES = Object.keys(SKILLS);
 
-/* Detail card — uses rAF trick so entry is a CSS transition, not a keyframe.
-   Emil: prefer transitions over keyframes for interruptible UI. */
 const DetailCard = ({ category }) => {
   const [entered, setEntered] = useState(false);
   const data = SKILLS[category];
@@ -49,9 +47,9 @@ export const SkillsSection = () => {
   const [active, setActive] = useState(null);
   const [displayed, setDisplayed] = useState(null);
   const sectionRef = useRef(null);
+  const panelRef = useRef(null);
   const exitTimer = useRef(null);
 
-  /* Outro: keep observer alive so isVisible toggles on scroll out */
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
@@ -61,7 +59,6 @@ export const SkillsSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  /* Keep card mounted during panel exit transition (320ms) */
   useEffect(() => {
     clearTimeout(exitTimer.current);
     if (active) {
@@ -70,6 +67,18 @@ export const SkillsSection = () => {
       exitTimer.current = setTimeout(() => setDisplayed(null), 320);
     }
     return () => clearTimeout(exitTimer.current);
+  }, [active]);
+
+  /* On mobile: scroll so panel bottom sits near the viewport bottom (never jumps to page top) */
+  useEffect(() => {
+    if (active && panelRef.current && window.innerWidth <= 680) {
+      const timer = setTimeout(() => {
+        const rect = panelRef.current.getBoundingClientRect();
+        const target = window.scrollY + rect.bottom - window.innerHeight + 70;
+        window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      }, 80);
+      return () => clearTimeout(timer);
+    }
   }, [active]);
 
   const toggle = useCallback(
@@ -88,7 +97,6 @@ export const SkillsSection = () => {
         </div>
 
         <div className="sk-body">
-          {/* Left: compact vertical list */}
           <div className="sk-list">
             {CATEGORIES.map((cat, i) => (
               <div
@@ -102,8 +110,9 @@ export const SkillsSection = () => {
                   aria-expanded={active === cat}
                 >
                   <div className="sk-btn-text">
-                    <span className="sk-btn-name">( {cat} )</span>
-                    <span className="sk-btn-sub">{SKILLS[cat].items.length} skills</span>
+                    {/* Bold straight name, curved italic count — swapped */}
+                    <span className="sk-btn-name">{cat}</span>
+                    <span className="sk-btn-sub">( {SKILLS[cat].items.length} )</span>
                   </div>
                   <span className="sk-btn-arrow" aria-hidden="true">→</span>
                 </button>
@@ -111,8 +120,11 @@ export const SkillsSection = () => {
             ))}
           </div>
 
-          {/* Right: detail panel — slides in, content swaps on key change */}
-          <div className={`sk-panel ${active ? 'sk-panel--open' : ''}`} aria-live="polite">
+          <div
+            className={`sk-panel ${active ? 'sk-panel--open' : ''}`}
+            aria-live="polite"
+            ref={panelRef}
+          >
             {displayed && <DetailCard key={displayed} category={displayed} />}
           </div>
         </div>
@@ -125,7 +137,7 @@ export const SkillsSection = () => {
           min-height: 100vh;
           display: flex;
           align-items: center;
-          border-top: 1px solid rgba(245, 230, 202, 0.06);
+          border-top: 1px solid rgba(245, 230, 202, 0.08);
           position: relative;
         }
 
@@ -135,7 +147,7 @@ export const SkillsSection = () => {
           margin: 0 auto;
         }
 
-        /* ── Header (shared entry/outro via transition) ── */
+        /* ── Header ── */
         .sk-header {
           margin-bottom: 60px;
           opacity: 0;
@@ -151,7 +163,7 @@ export const SkillsSection = () => {
           font-style: italic;
           font-size: 14px;
           font-weight: 400;
-          color: rgba(245, 230, 202, 0.4);
+          color: rgba(245, 230, 202, 0.45);
           letter-spacing: 0.08em;
           display: block;
           margin-bottom: 10px;
@@ -170,13 +182,13 @@ export const SkillsSection = () => {
         .sk-line {
           width: 40px;
           height: 1px;
-          background: rgba(245, 230, 202, 0.2);
+          background: rgba(245, 230, 202, 0.25);
           border-radius: 1px;
           transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.25s;
         }
         .sk-header.sk-vis .sk-line { width: 56px; }
 
-        /* ── Layout ── */
+        /* ── Body ── */
         .sk-body {
           display: flex;
           gap: 28px;
@@ -192,8 +204,6 @@ export const SkillsSection = () => {
           width: 210px;
         }
 
-        /* Entry/outro wrapper — owns the scroll-triggered transform.
-           Separated from sk-btn so the dock translateX doesn't fight it. */
         .sk-row {
           opacity: 0;
           transform: translateX(-14px);
@@ -206,7 +216,6 @@ export const SkillsSection = () => {
           transform: translateX(0);
         }
 
-        /* Interactive button — owns its own transform (dock shift) */
         .sk-btn {
           width: 100%;
           display: flex;
@@ -214,8 +223,8 @@ export const SkillsSection = () => {
           justify-content: space-between;
           gap: 8px;
           padding: 14px 16px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(245, 230, 202, 0.08);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(245, 230, 202, 0.11);
           border-radius: 16px;
           cursor: pointer;
           text-align: left;
@@ -228,15 +237,13 @@ export const SkillsSection = () => {
           -webkit-tap-highlight-color: transparent;
         }
 
-        /* Dock: active card shifts right, creating space feel */
         .sk-btn--active {
           transform: translateX(10px);
-          background: rgba(245, 230, 202, 0.05);
-          border-color: rgba(245, 230, 202, 0.18);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+          background: rgba(245, 230, 202, 0.08);
+          border-color: rgba(245, 230, 202, 0.22);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
-        /* Emil: scale(0.97) on :active — interface must feel responsive */
         .sk-btn:active {
           transform: scale(0.97);
           transition: transform 100ms ease-out;
@@ -248,9 +255,9 @@ export const SkillsSection = () => {
 
         @media (hover: hover) and (pointer: fine) {
           .sk-btn:not(.sk-btn--active):hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(245, 230, 202, 0.12);
-            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.22);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(245, 230, 202, 0.16);
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.18);
           }
         }
 
@@ -261,41 +268,43 @@ export const SkillsSection = () => {
           min-width: 0;
         }
 
+        /* Bold straight Inter for the category name */
         .sk-btn-name {
-          font-family: 'Cormorant Garamond', serif;
-          font-style: italic;
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(245, 230, 202, 0.45);
-          letter-spacing: 0.06em;
+          font-family: 'Inter', sans-serif;
+          font-size: 13px;
+          font-weight: 700;
+          color: rgba(245, 230, 202, 0.55);
+          letter-spacing: 0.01em;
           transition: color 180ms ease-out;
         }
         .sk-btn--active .sk-btn-name { color: #F5E6CA; }
 
+        /* Curved Cormorant italic for the count with parentheses */
         .sk-btn-sub {
-          font-family: 'Inter', sans-serif;
-          font-size: 11px;
-          font-weight: 500;
-          color: rgba(245, 230, 202, 0.2);
-          letter-spacing: 0.04em;
+          font-family: 'Cormorant Garamond', serif;
+          font-style: italic;
+          font-size: 13px;
+          font-weight: 400;
+          color: rgba(245, 230, 202, 0.28);
+          letter-spacing: 0.06em;
           transition: color 180ms ease-out;
         }
-        .sk-btn--active .sk-btn-sub { color: rgba(245, 230, 202, 0.45); }
+        .sk-btn--active .sk-btn-sub { color: rgba(245, 230, 202, 0.5); }
 
         .sk-btn-arrow {
           font-size: 13px;
-          color: rgba(245, 230, 202, 0.18);
+          color: rgba(245, 230, 202, 0.22);
           flex-shrink: 0;
           transition:
             color 180ms ease-out,
             transform 350ms cubic-bezier(0.23, 1, 0.32, 1);
         }
         .sk-btn--active .sk-btn-arrow {
-          color: rgba(245, 230, 202, 0.55);
+          color: rgba(245, 230, 202, 0.6);
           transform: translateX(3px);
         }
 
-        /* ── Detail panel (right) — slides in/out via transition ── */
+        /* ── Detail panel ── */
         .sk-panel {
           flex: 1;
           min-height: 160px;
@@ -312,16 +321,15 @@ export const SkillsSection = () => {
           pointer-events: auto;
         }
 
-        /* ── Card — starts from scale(0.98), never scale(0) ── */
         .sk-card {
           position: relative;
           padding: 30px 32px;
-          background: rgba(255, 255, 255, 0.04);
+          background: rgba(255, 255, 255, 0.06);
           -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(245, 230, 202, 0.09);
+          border: 1px solid rgba(245, 230, 202, 0.12);
           border-radius: 22px;
-          box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+          box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3);
           overflow: hidden;
           opacity: 0;
           transform: translateX(12px) scale(0.98);
@@ -340,7 +348,7 @@ export const SkillsSection = () => {
           right: -50px;
           width: 180px;
           height: 180px;
-          background: radial-gradient(circle, rgba(245, 230, 202, 0.055), transparent 70%);
+          background: radial-gradient(circle, rgba(245, 230, 202, 0.07), transparent 70%);
           border-radius: 50%;
           pointer-events: none;
           filter: blur(28px);
@@ -351,7 +359,7 @@ export const SkillsSection = () => {
           font-style: italic;
           font-size: 13px;
           font-weight: 400;
-          color: rgba(245, 230, 202, 0.35);
+          color: rgba(245, 230, 202, 0.4);
           letter-spacing: 0.1em;
           margin: 0 0 7px;
           position: relative;
@@ -362,7 +370,7 @@ export const SkillsSection = () => {
           font-family: 'Inter', sans-serif;
           font-size: 14px;
           font-weight: 400;
-          color: rgba(245, 230, 202, 0.42);
+          color: rgba(245, 230, 202, 0.48);
           line-height: 1.65;
           margin: 0 0 22px;
           max-width: 380px;
@@ -370,7 +378,6 @@ export const SkillsSection = () => {
           z-index: 1;
         }
 
-        /* ── Pills — staggered entry via keyframe (one-shot, post-card-mount) ── */
         .sk-pills {
           display: flex;
           flex-wrap: wrap;
@@ -383,9 +390,9 @@ export const SkillsSection = () => {
           font-family: 'Inter', sans-serif;
           font-size: 13px;
           font-weight: 600;
-          color: rgba(245, 230, 202, 0.72);
-          background: rgba(245, 230, 202, 0.04);
-          border: 1px solid rgba(245, 230, 202, 0.09);
+          color: rgba(245, 230, 202, 0.78);
+          background: rgba(245, 230, 202, 0.07);
+          border: 1px solid rgba(245, 230, 202, 0.13);
           padding: 7px 15px;
           border-radius: 11px;
           cursor: default;
@@ -406,29 +413,26 @@ export const SkillsSection = () => {
         @media (hover: hover) and (pointer: fine) {
           .sk-pill:hover {
             transform: translateY(-2px);
-            background: rgba(245, 230, 202, 0.09);
-            border-color: rgba(245, 230, 202, 0.2);
+            background: rgba(245, 230, 202, 0.12);
+            border-color: rgba(245, 230, 202, 0.24);
             color: #F5E6CA;
           }
         }
 
-        /* ── Mobile: stack vertically, no horizontal dock shift ── */
+        /* ── Mobile ── */
         @media (max-width: 680px) {
           .sk-body { flex-direction: column; gap: 16px; }
           .sk-list { width: 100%; }
 
-          /* Override entry animation direction for stacked layout */
           .sk-row { transform: translateY(10px); }
           .sk-row.sk-vis { transform: translateX(0); }
 
-          /* No sideways dock on mobile */
           .sk-btn--active {
             transform: translateX(0);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
           }
           .sk-btn--active:active { transform: scale(0.97); }
 
-          /* Panel slides in from below on mobile */
           .sk-panel { transform: translateY(14px); }
           .sk-panel--open { transform: translateX(0); }
         }
