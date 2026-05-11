@@ -14,8 +14,13 @@
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-border: rgba(245, 230, 202, 0.1);
   --glass-hover: rgba(245, 230, 202, 0.07);
+
+  /* Emil-spec easing curves */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --ios-spring: cubic-bezier(0.28, 0.11, 0.32, 1);
-  --ios-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -48,27 +53,20 @@ body {
   color: var(--cream);
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(245, 230, 202, 0.15);
+  background: rgba(245, 230, 202, 0.12);
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(245, 230, 202, 0.25);
+  background: rgba(245, 230, 202, 0.22);
 }
 
 /* ─── Keyframes ──────────────────────────────────── */
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -77,39 +75,23 @@ body {
   to   { opacity: 1; }
 }
 
-/* iOS-style spring entry */
 @keyframes springIn {
-  0%   { opacity: 0; transform: scale(0.82) translateY(20px); }
-  60%  { opacity: 1; transform: scale(1.03) translateY(-3px); }
-  80%  { transform: scale(0.99) translateY(1px); }
+  0%   { opacity: 0; transform: scale(0.94) translateY(16px); }
+  60%  { opacity: 1; transform: scale(1.01) translateY(-2px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* iOS sheet slide-up */
 @keyframes slideUpSpring {
-  0%   { opacity: 0; transform: translateY(60px); }
-  65%  { opacity: 1; transform: translateY(-5px); }
+  0%   { opacity: 0; transform: translateY(50px); }
+  65%  { opacity: 1; transform: translateY(-4px); }
   82%  { transform: translateY(2px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* iOS name reveal */
 @keyframes nameReveal {
-  0%   { opacity: 0; transform: translateY(50px) skewY(4deg); }
-  70%  { opacity: 1; transform: translateY(-4px) skewY(-0.5deg); }
+  0%   { opacity: 0; transform: translateY(44px) skewY(4deg); }
+  70%  { opacity: 1; transform: translateY(-3px) skewY(-0.5deg); }
   100% { opacity: 1; transform: translateY(0) skewY(0); }
-}
-
-/* Gentle breathe — iOS focus ring style */
-@keyframes breathe {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.018); }
-}
-
-/* Continuous float for cards / badges */
-@keyframes subtleFloat {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-8px); }
 }
 
 @keyframes floatSlow {
@@ -119,64 +101,33 @@ body {
 
 @keyframes gentlePulse {
   0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.8; }
+  50%       { opacity: 0.85; }
 }
 
-/* Glass shine sweep */
-@keyframes glassShine {
-  0%   { left: -120%; }
-  100% { left: 140%; }
-}
-
-/* Glow pulse */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(245, 230, 202, 0.03); }
-  50%       { box-shadow: 0 0 60px rgba(245, 230, 202, 0.1), 0 0 100px rgba(245, 230, 202, 0.04); }
-}
-
-/* Ripple on click */
-@keyframes ripple {
-  0%   { transform: scale(1); opacity: 0.4; }
-  100% { transform: scale(3); opacity: 0; }
-}
-
-/* Rotating gradient for orb rings */
-@keyframes rotateGradient {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Orbs — varied durations for organic feel */
 @keyframes orbFloat1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  25%  { transform: translate(40px, -55px) scale(1.06); }
-  50%  { transform: translate(-25px, -70px) scale(0.94); }
-  75%  { transform: translate(-50px, -20px) scale(1.03); }
+  25%  { transform: translate(36px, -50px) scale(1.05); }
+  50%  { transform: translate(-22px, -64px) scale(0.95); }
+  75%  { transform: translate(-46px, -18px) scale(1.02); }
 }
 
 @keyframes orbFloat2 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  25%  { transform: translate(-50px, 35px) scale(0.97); }
-  50%  { transform: translate(40px, 60px) scale(1.05); }
-  75%  { transform: translate(60px, -15px) scale(0.96); }
+  25%  { transform: translate(-46px, 32px) scale(0.97); }
+  50%  { transform: translate(36px, 55px) scale(1.04); }
+  75%  { transform: translate(55px, -14px) scale(0.96); }
 }
 
 @keyframes orbFloat3 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(60px, 35px) scale(1.04); }
-  66%  { transform: translate(-35px, -50px) scale(0.95); }
+  33%  { transform: translate(55px, 30px) scale(1.03); }
+  66%  { transform: translate(-30px, -45px) scale(0.96); }
 }
 
 @keyframes orbFloat4 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  30%  { transform: translate(-30px, -30px) scale(1.02); }
-  60%  { transform: translate(45px, 20px) scale(0.98); }
-}
-
-@keyframes orbFloat5 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  40%  { transform: translate(20px, -40px) scale(1.03); }
-  80%  { transform: translate(-40px, 15px) scale(0.97); }
+  30%  { transform: translate(-28px, -28px) scale(1.02); }
+  60%  { transform: translate(40px, 18px) scale(0.98); }
 }
 
 /* Grain noise */
@@ -193,37 +144,23 @@ body {
   90%  { transform: translate(-10%, 10%); }
 }
 
-/* Icon pulse ring */
-@keyframes iconPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 230, 202, 0.1); }
-  50%       { box-shadow: 0 0 0 10px rgba(245, 230, 202, 0); }
-}
-
-/* Stagger shimmer for text lines */
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
 /* Editorial text cascade */
 @keyframes textCascade {
-  0%   { opacity: 0; transform: translateX(-16px); }
+  0%   { opacity: 0; transform: translateX(-14px); }
   60%  { opacity: 1; transform: translateX(2px); }
   100% { opacity: 1; transform: translateX(0); }
 }
 
-/* Metallic shine (kept for loading bar) */
-@keyframes metallicShine {
-  0%   { left: -100%; }
-  100% { left: 200%; }
-}
-
-/* ─── Mobile performance: pause heavy animations ─── */
+/* ─── Mobile performance ─── */
 @media (max-width: 768px) {
-  /* Grain texture runs a continuous translate animation on a 200% element — not visible,
-     costs paint on every frame. Pause it on mobile. */
   .grain-overlay {
     animation-play-state: paused;
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay,
+  [class*="orb-"] {
+    animation: none !important;
+  }
+}

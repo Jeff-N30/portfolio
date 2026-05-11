@@ -9,12 +9,7 @@ export const AboutSection = () => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
+      ([entry]) => setIsVisible(entry.isIntersecting),
       { threshold: 0.15 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -24,8 +19,8 @@ export const AboutSection = () => {
   const handleMouseMove = (e) => {
     if (isFlipped || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 18;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -18;
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -14;
     setTilt({ x, y });
   };
 
@@ -37,7 +32,7 @@ export const AboutSection = () => {
         <div className={`ab-header ${isVisible ? 'ab-visible' : ''}`}>
           <span className="ab-label">( About )</span>
           <h2 className="ab-title">The Person</h2>
-          <div className="ab-line"></div>
+          <div className="ab-line" />
         </div>
 
         <div
@@ -55,11 +50,9 @@ export const AboutSection = () => {
                 : `perspective(1400px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`
             }}
           >
-
             {/* ─ Front: Developer ─ */}
             <div className="ab-face ab-front">
-              <div className="ab-glass-shine"></div>
-              <div className="ab-orb ab-orb-front"></div>
+              <div className="ab-orb ab-orb-front" aria-hidden="true" />
 
               <div className="ab-face-top">
                 <span className="ab-role-label">( Developer )</span>
@@ -84,8 +77,7 @@ export const AboutSection = () => {
 
             {/* ─ Back: Athlete ─ */}
             <div className="ab-face ab-back">
-              <div className="ab-glass-shine"></div>
-              <div className="ab-orb ab-orb-back"></div>
+              <div className="ab-orb ab-orb-back" aria-hidden="true" />
 
               <div className="ab-face-top">
                 <span className="ab-role-label">( Athlete )</span>
@@ -133,10 +125,10 @@ export const AboutSection = () => {
         .ab-header {
           text-align: center;
           opacity: 0;
-          transform: translateY(24px);
+          transform: translateY(20px);
           transition:
-            opacity 0.8s cubic-bezier(0.28, 0.11, 0.32, 1),
-            transform 0.8s cubic-bezier(0.28, 0.11, 0.32, 1);
+            opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+            transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .ab-header.ab-visible {
           opacity: 1;
@@ -148,7 +140,7 @@ export const AboutSection = () => {
           font-style: italic;
           font-size: 15px;
           font-weight: 400;
-          color: rgba(245, 230, 202, 0.45);
+          color: rgba(245, 230, 202, 0.42);
           letter-spacing: 0.08em;
           display: block;
           margin-bottom: 10px;
@@ -166,15 +158,13 @@ export const AboutSection = () => {
 
         .ab-line {
           width: 40px;
-          height: 2px;
-          background: rgba(245, 230, 202, 0.25);
+          height: 1px;
+          background: rgba(245, 230, 202, 0.2);
           border-radius: 1px;
           margin: 0 auto;
-          transition: width 0.9s cubic-bezier(0.28, 0.11, 0.32, 1) 0.35s;
+          transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.3s;
         }
-        .ab-header.ab-visible .ab-line {
-          width: 60px;
-        }
+        .ab-header.ab-visible .ab-line { width: 56px; }
 
         /* ── Card wrap ── */
         .ab-card-wrap {
@@ -185,11 +175,10 @@ export const AboutSection = () => {
           cursor: pointer;
           border-radius: 28px;
           opacity: 0;
-          transform: translateY(50px) scale(0.95);
+          transform: translateY(44px) scale(0.96);
           transition:
-            opacity 0.9s cubic-bezier(0.28, 0.11, 0.32, 1) 0.18s,
-            transform 0.9s cubic-bezier(0.28, 0.11, 0.32, 1) 0.18s;
-          animation: glowPulse 6s ease-in-out infinite 1.2s;
+            opacity 0.85s cubic-bezier(0.23, 1, 0.32, 1) 0.16s,
+            transform 0.85s cubic-bezier(0.23, 1, 0.32, 1) 0.16s;
         }
         .ab-card-wrap.ab-visible {
           opacity: 1;
@@ -202,115 +191,79 @@ export const AboutSection = () => {
           height: 100%;
           -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
-          transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
           border-radius: 28px;
         }
 
-
-        /* ── Both faces ── */
+        /* ── Both faces — flat glass, no metallic highlights ── */
         .ab-face {
           position: absolute;
           inset: 0;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
           border-radius: 28px;
-          border: 1px solid rgba(245, 230, 202, 0.12);
-          background: rgba(255, 255, 255, 0.05);
-          -webkit-backdrop-filter: blur(40px);
-          backdrop-filter: blur(40px);
-          box-shadow:
-            0 8px 40px rgba(0, 0, 0, 0.5),
-            inset 0 1px 0 rgba(245, 230, 202, 0.1);
+          border: 1px solid rgba(245, 230, 202, 0.1);
+          background: rgba(255, 255, 255, 0.045);
+          -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+          /* Clean shadow — no metallic inset top line */
+          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
           padding: 44px 48px;
           display: flex;
           flex-direction: column;
           overflow: hidden;
           will-change: transform;
           transition:
-            border-color 0.35s ease,
-            box-shadow 0.35s ease;
+            border-color 0.25s ease-out,
+            box-shadow 0.25s ease-out;
         }
 
-        .ab-card-wrap:hover .ab-face {
-          border-color: rgba(245, 230, 202, 0.2);
-          box-shadow:
-            0 24px 70px rgba(0, 0, 0, 0.6),
-            inset 0 1px 0 rgba(245, 230, 202, 0.16);
+        @media (hover: hover) and (pointer: fine) {
+          .ab-card-wrap:hover .ab-face {
+            border-color: rgba(245, 230, 202, 0.18);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+          }
         }
 
-        /* Safari requires an explicit transform on the front face for
-           backface-visibility: hidden to work. Without it Safari skips the
-           compositing layer and the back-face text bleeds through mirrored. */
-        .ab-front {
-          transform: rotateY(0deg);
-        }
+        /* Safari: explicit transform on front for backface-visibility compositing */
+        .ab-front { transform: rotateY(0deg); }
+        .ab-back  { transform: rotateY(180deg); }
 
-        .ab-back {
-          transform: rotateY(180deg);
-        }
-
-        /* ── Glass shine sweep ── */
-        .ab-glass-shine {
-          position: absolute;
-          top: 0;
-          left: -120%;
-          width: 70%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(245, 230, 202, 0.05),
-            transparent
-          );
-          pointer-events: none;
-          transition: left 0s;
-        }
-        .ab-card-wrap:hover .ab-face .ab-glass-shine {
-          left: 140%;
-          transition: left 0.75s ease;
-        }
-
-        /* ── Orb ── */
+        /* ── Orb — static, no animation (page-level orbs handle ambient light) ── */
         .ab-orb {
           position: absolute;
           border-radius: 50%;
           pointer-events: none;
-          filter: blur(60px);
+          filter: blur(55px);
         }
         .ab-orb-front {
-          width: 260px;
-          height: 260px;
-          background: radial-gradient(circle, rgba(245, 230, 202, 0.08), transparent 70%);
+          width: 240px;
+          height: 240px;
+          background: radial-gradient(circle, rgba(245, 230, 202, 0.06), transparent 70%);
           top: -40px;
           right: -60px;
-          animation: orbFloat1 19s ease-in-out infinite;
         }
         .ab-orb-back {
-          width: 220px;
-          height: 220px;
-          background: radial-gradient(circle, rgba(245, 230, 202, 0.07), transparent 70%);
+          width: 200px;
+          height: 200px;
+          background: radial-gradient(circle, rgba(245, 230, 202, 0.055), transparent 70%);
           bottom: -30px;
           left: -50px;
-          animation: orbFloat2 23s ease-in-out infinite;
         }
 
-        /* ── Face layout pieces ── */
-        .ab-face-top {
-          margin-bottom: 18px;
-        }
+        /* ── Face layout ── */
+        .ab-face-top { margin-bottom: 18px; }
 
         .ab-role-label {
           font-family: 'Cormorant Garamond', serif;
           font-style: italic;
           font-size: 14px;
           font-weight: 400;
-          color: rgba(245, 230, 202, 0.4);
+          color: rgba(245, 230, 202, 0.38);
           letter-spacing: 0.1em;
         }
 
-        .ab-name-block {
-          margin-bottom: 32px;
-        }
+        .ab-name-block { margin-bottom: 32px; }
 
         .ab-name {
           font-family: 'Cormorant Garamond', serif;
@@ -319,7 +272,6 @@ export const AboutSection = () => {
           color: #F5E6CA;
           letter-spacing: -2px;
           line-height: 0.9;
-          text-shadow: 0 0 80px rgba(245, 230, 202, 0.08);
         }
 
         .ab-name-back {
@@ -327,7 +279,7 @@ export const AboutSection = () => {
           letter-spacing: -1.5px;
         }
 
-        /* ── Text lines — editorial, no bullets ── */
+        /* ── Text lines ── */
         .ab-text-lines {
           display: flex;
           flex-direction: column;
@@ -342,78 +294,38 @@ export const AboutSection = () => {
           opacity: 0;
         }
 
-        /* Developer side — cascade opacity + size */
-        .ab-t1 {
-          font-size: 22px;
-          font-weight: 600;
-          color: #F5E6CA;
-          opacity: 0;
-        }
-        .ab-t2 {
-          font-size: 20px;
-          font-weight: 400;
-          color: rgba(245, 230, 202, 0.8);
-          opacity: 0;
-        }
-        .ab-t3 {
-          font-size: 18px;
-          font-weight: 300;
-          color: rgba(245, 230, 202, 0.55);
-          opacity: 0;
-        }
+        .ab-t1 { font-size: 22px; font-weight: 600; color: #F5E6CA; }
+        .ab-t2 { font-size: 20px; font-weight: 400; color: rgba(245, 230, 202, 0.78); }
+        .ab-t3 { font-size: 18px; font-weight: 300; color: rgba(245, 230, 202, 0.52); }
 
-        /* Animate text lines when face becomes visible */
         .ab-card-wrap.ab-visible .ab-front .ab-t1 {
-          animation: textCascade 0.65s cubic-bezier(0.28, 0.11, 0.32, 1) 0.6s forwards;
+          animation: textCascade 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.58s forwards;
         }
         .ab-card-wrap.ab-visible .ab-front .ab-t2 {
-          animation: textCascade 0.7s cubic-bezier(0.28, 0.11, 0.32, 1) 0.78s forwards;
+          animation: textCascade 0.65s cubic-bezier(0.23, 1, 0.32, 1) 0.74s forwards;
         }
         .ab-card-wrap.ab-visible .ab-front .ab-t3 {
-          animation: textCascade 0.75s cubic-bezier(0.28, 0.11, 0.32, 1) 0.98s forwards;
+          animation: textCascade 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.92s forwards;
         }
 
-        /* Athlete side */
-        .ab-athletic-lines {
-          gap: 6px;
-        }
+        .ab-athletic-lines { gap: 6px; }
 
-        .ab-a1 {
-          font-size: 26px;
-          font-weight: 700;
-          color: #F5E6CA;
-          letter-spacing: -0.5px;
-        }
-        .ab-a2 {
-          font-size: 23px;
-          font-weight: 600;
-          color: rgba(245, 230, 202, 0.82);
-          letter-spacing: -0.3px;
-        }
-        .ab-a3 {
-          font-size: 20px;
-          font-weight: 400;
-          color: rgba(245, 230, 202, 0.65);
-        }
-        .ab-a4 {
-          font-size: 18px;
-          font-weight: 300;
-          color: rgba(245, 230, 202, 0.48);
-          font-style: italic;
-        }
+        .ab-a1 { font-size: 26px; font-weight: 700; color: #F5E6CA; letter-spacing: -0.5px; }
+        .ab-a2 { font-size: 23px; font-weight: 600; color: rgba(245, 230, 202, 0.80); letter-spacing: -0.3px; }
+        .ab-a3 { font-size: 20px; font-weight: 400; color: rgba(245, 230, 202, 0.62); }
+        .ab-a4 { font-size: 18px; font-weight: 300; color: rgba(245, 230, 202, 0.46); font-style: italic; }
 
-        /* Athlete lines appear immediately after flip */
         .ab-card.ab-flipped .ab-back .ab-a1 {
-          animation: textCascade 0.55s cubic-bezier(0.28, 0.11, 0.32, 1) 0.5s forwards;
+          animation: textCascade 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0.48s forwards;
         }
         .ab-card.ab-flipped .ab-back .ab-a2 {
-          animation: textCascade 0.6s cubic-bezier(0.28, 0.11, 0.32, 1) 0.65s forwards;
+          animation: textCascade 0.55s cubic-bezier(0.23, 1, 0.32, 1) 0.62s forwards;
         }
         .ab-card.ab-flipped .ab-back .ab-a3 {
-          animation: textCascade 0.65s cubic-bezier(0.28, 0.11, 0.32, 1) 0.82s forwards;
+          animation: textCascade 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.78s forwards;
         }
         .ab-card.ab-flipped .ab-back .ab-a4 {
-          animation: textCascade 0.7s cubic-bezier(0.28, 0.11, 0.32, 1) 1.0s forwards;
+          animation: textCascade 0.65s cubic-bezier(0.23, 1, 0.32, 1) 0.96s forwards;
         }
 
         /* ── Quote ── */
@@ -426,31 +338,33 @@ export const AboutSection = () => {
           font-style: italic;
           font-size: 14px;
           font-weight: 400;
-          color: rgba(245, 230, 202, 0.3);
+          color: rgba(245, 230, 202, 0.28);
           letter-spacing: 0.02em;
           line-height: 1.6;
         }
 
-        /* ── Flip hint ── */
+        /* ── Hint ── */
         .ab-hint {
           font-family: 'Inter', sans-serif;
           font-size: 11px;
           font-weight: 500;
-          color: rgba(245, 230, 202, 0.2);
+          color: rgba(245, 230, 202, 0.18);
           letter-spacing: 0.1em;
           text-transform: uppercase;
           margin-top: auto;
           padding-top: 8px;
           text-align: right;
-          transition: color 0.3s ease;
+          transition: color 0.2s ease-out;
         }
-        .ab-card-wrap:hover .ab-hint {
-          color: rgba(245, 230, 202, 0.38);
+
+        @media (hover: hover) and (pointer: fine) {
+          .ab-card-wrap:hover .ab-hint {
+            color: rgba(245, 230, 202, 0.36);
+          }
         }
 
         /* ── Mobile ── */
         @media (max-width: 768px) {
-          /* Reduce blur intensity on mobile — keeps the glass look, cuts GPU compositing cost */
           .ab-face {
             -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
@@ -458,29 +372,11 @@ export const AboutSection = () => {
         }
 
         @media (max-width: 600px) {
-          .ab-section {
-            padding: 80px 20px;
-            min-height: auto;
-          }
-
-          .ab-card-wrap {
-            height: 420px;
-            border-radius: 22px;
-          }
-
-          .ab-card {
-            border-radius: 22px;
-          }
-
-          .ab-face {
-            padding: 32px 28px;
-            border-radius: 22px;
-          }
-
-          .ab-title {
-            font-size: 34px;
-          }
-
+          .ab-section { padding: 80px 20px; min-height: auto; }
+          .ab-card-wrap { height: 420px; border-radius: 22px; }
+          .ab-card { border-radius: 22px; }
+          .ab-face { padding: 32px 28px; border-radius: 22px; }
+          .ab-title { font-size: 34px; }
           .ab-t1 { font-size: 19px; }
           .ab-t2 { font-size: 17px; }
           .ab-t3 { font-size: 15px; }
